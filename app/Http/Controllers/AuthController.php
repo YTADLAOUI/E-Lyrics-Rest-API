@@ -41,11 +41,12 @@ class AuthController extends Controller
         if(!$token)
             return $this->returnError('E001','email and password not correct');
 
-     //get admin with token
+    // generate Auth
+
      $user = Auth::user();
      $user->remember_token=$token;
 //return token jwt
-      return $this->returnData('user',$user,'succes');
+    return $this->returnData('user',$user,'succes',$token);
 
     }catch(Exception $e){
         return $this->returnError($e->getCode(),$e->getMessage());
@@ -60,7 +61,7 @@ class AuthController extends Controller
 
             // validation
      try{
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -75,8 +76,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // generate Auth
+        
+        $token = Auth::login($user);
 
-      return $this->returnData('user',$user,'register Successfully');
+      return $this->returnData('user',$user,'register Successfully',$token);
 
 
     }
