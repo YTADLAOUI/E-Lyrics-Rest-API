@@ -10,12 +10,16 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
     // trait to generate Error and success message
     use GeneralTrait;
-
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login','register']]);
+    }
     // login
     public function login(Request $request){
 
@@ -77,7 +81,7 @@ class AuthController extends Controller
         ]);
 
         // generate Auth
-        
+
         $token = Auth::login($user);
 
       return $this->returnData('user',$user,'register Successfully',$token);
@@ -87,8 +91,15 @@ class AuthController extends Controller
     catch(Exception $e){
         return $this->returnError($e->getCode(),$e->getMessage());
     }
+}
+// logout
+public function logout()
+    {
 
-
+            Auth::logout();
+            return $this->returnSuccessMessage("Logout has been success!","S002");
 
 }
+
+
 }
