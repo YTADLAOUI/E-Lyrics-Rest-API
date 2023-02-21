@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArtistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/artist', ArtistController::class);
 
 //PRIVATE
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+});
