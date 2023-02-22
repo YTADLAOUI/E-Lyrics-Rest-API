@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lyric;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class LyricsController extends Controller
@@ -37,6 +38,13 @@ class LyricsController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'name'  => 'required|min:2'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
         $input = $request->all();
         Lyric::create($input);
         return 'creation sucss';

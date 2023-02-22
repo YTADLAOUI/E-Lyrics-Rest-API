@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use App\Models\song;
 use Illuminate\Http\Request;
 
@@ -14,6 +14,7 @@ class SongsController extends Controller
      */
     public function index()
     {
+
         $songs= song::all();
         return $songs->toJson();
     }
@@ -36,6 +37,13 @@ class SongsController extends Controller
      */
     public function store(Request $request)
     {
+         $rules = [
+            'name'  => 'required|min:2'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
         $input = $request->all();
         song::create($input);
         return 'creation sucss';
