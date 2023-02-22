@@ -25,7 +25,7 @@ use GeneralTrait;
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
 
-                return $this->returnError("E005","oken is Invalid");
+                return $this->returnError("E005","Token is Invalid");
 
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
 
@@ -33,7 +33,7 @@ use GeneralTrait;
 
 
             }else{
-                
+
                 return $this->returnError("E007","Authorization Token not found");
 
             }
