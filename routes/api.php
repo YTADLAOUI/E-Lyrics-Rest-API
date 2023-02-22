@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlbumController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -26,6 +27,17 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
+
 });
 Route::resource('/lyrics',ControllerLyrics::class);
 
+Route::group(['middleware' => ['token-verify']], function() {
+
+    Route::post('logout',[AuthController::class,'logout']);
+    Route::post('profil',[AuthController::class,'profil']);
+
+});
+
+//fouad
+Route::apiResource('albums', AlbumController::class);
+//fouad
