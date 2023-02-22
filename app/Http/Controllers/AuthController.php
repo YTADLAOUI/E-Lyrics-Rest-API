@@ -18,7 +18,7 @@ class AuthController extends Controller
 {
     // trait to generate Error and success message
     use GeneralTrait;
-   
+
    // login
    public function login(Request $request){
 
@@ -100,30 +100,66 @@ return $this->returnData('user',$user,'succes',$token);
 public function logout()
     {
 
-            // Auth::logout();
-            // return $this->returnSuccessMessage("Logout has been success!","S002");
             try {
+                $user = JWTAuth::parseToken()->authenticate();
 
-                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                if (!$user) {
                         return response()->json(['user_not_found'], 404);
                 }
 
-        } catch (TokenExpiredException $e) {
+            } catch (TokenExpiredException $e) {
 
-                return response()->json(['token_expired'], $e->getMessage());
+                return  $this->returnError('E404','token_expired!');
 
-        } catch (TokenInvalidException $e) {
 
-                return response()->json(['token_invalid'], $e->getMessage());
 
-        } catch (JWTException $e) {
+            } catch (TokenInvalidException $e) {
 
-                return response()->json(['token_absent'], $e->getMessage());
+                return  $this->returnError('E404','token_invalid!');
+
+
+
+            } catch (JWTException $e) {
+                return  $this->returnError('E404','token_absent!');
+
+
+
+            }
+
+            Auth::logout();
+            return $this->returnSuccessMessage("Logout has been success!","S002");
+}
+// show profil
+public function profil(){
+    try {
+        $user = JWTAuth::parseToken()->authenticate();
+        if (!$user) {
+
+           return  $this->returnError('E404','user_not_found!');
 
         }
 
-        return response()->json(compact('user'));
+} catch (TokenExpiredException $e) {
+
+    return  $this->returnError('E404','token_expired!');
+
+
+
+} catch (TokenInvalidException $e) {
+
+    return  $this->returnError('E404','token_invalid!');
+
+
+
+} catch (JWTException $e) {
+    return  $this->returnError('E404','token_absent!');
+
+
+
 }
 
+
+return $this->returnData('user-profil',$user,"success","");
+}
 
 }

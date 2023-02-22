@@ -30,6 +30,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::group(['middleware' => ['token-verify']], function() {
 
     Route::post('logout',[AuthController::class,'logout']);
+    Route::post('profil',[AuthController::class,'profil']);
 
 });
 
