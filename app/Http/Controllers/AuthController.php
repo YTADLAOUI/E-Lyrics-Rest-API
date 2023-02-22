@@ -6,21 +6,19 @@ use Exception;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class AuthController extends Controller
 {
     // trait to generate Error and success message
     use GeneralTrait;
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
-    }
-    // login
+   
    // login
    public function login(Request $request){
 
@@ -102,9 +100,29 @@ return $this->returnData('user',$user,'succes',$token);
 public function logout()
     {
 
-            Auth::logout();
-            return $this->returnSuccessMessage("Logout has been success!","S002");
+            // Auth::logout();
+            // return $this->returnSuccessMessage("Logout has been success!","S002");
+            try {
 
+                if (! $user = JWTAuth::parseToken()->authenticate()) {
+                        return response()->json(['user_not_found'], 404);
+                }
+
+        } catch (TokenExpiredException $e) {
+
+                return response()->json(['token_expired'], $e->getMessage());
+
+        } catch (TokenInvalidException $e) {
+
+                return response()->json(['token_invalid'], $e->getMessage());
+
+        } catch (JWTException $e) {
+
+                return response()->json(['token_absent'], $e->getMessage());
+
+        }
+
+        return response()->json(compact('user'));
 }
 
 
