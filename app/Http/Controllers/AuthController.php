@@ -61,6 +61,7 @@ return $this->returnData('user',$user,'succes',$token);
     // register
     public function register(Request $request)
     {
+       
 
             // validation
      try{
