@@ -10,9 +10,10 @@ class Lyric extends Model
     use HasFactory;
     protected $fillable=[
         'title',
-        'contetnt'
+        'contetnt',
+        'song_ID'
     ];
     public function song(){
-        return $this->hasOne(Song::class);
+        return $this->hasMany(song::class);
     }
 }
