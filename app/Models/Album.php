@@ -17,6 +17,6 @@ class Album extends Model
         'release_date'
     ];
     public function song(){
-        return $this->belongsTo(song::class);
+        return $this->hasMany(song::class);
     }
 }

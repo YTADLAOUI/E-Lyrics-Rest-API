@@ -15,10 +15,10 @@ class song extends Model
         return $this->belongsTo(Lyric::class);
     }
     public function album(){
-        return $this->hasOne(Album::class);
+        return $this->belongsTo(Album::class);
     }
     public function atiste(){
-        return $this->hasOne(Artist::class);
+        return $this->belongsTo(Artist::class);
     }
 
 }
