@@ -5,7 +5,8 @@ use App\Http\Controllers\AlbumController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ControllerLyrics;
+use App\Http\Controllers\LyricsController;
+use App\Http\Controllers\SongsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,6 @@ Route::group(['middleware' => ['token-verify']], function () {
     Route::post('profil', [AuthController::class, 'profil']);
     Route::apiResource('/artists', ArtistController::class);
     Route::apiResource('/albums', AlbumController::class);
-    Route::resource('/lyrics', ControllerLyrics::class);
+    Route::resource('/lyrics', LyricsController::class);
+    Route::resource('/songs', SongsController::class);
 });
-
