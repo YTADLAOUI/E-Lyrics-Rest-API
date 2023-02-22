@@ -62,6 +62,7 @@ class AuthController extends Controller
     // register
     public function register(Request $request)
     {
+       
 
             // validation
      try{
@@ -83,7 +84,7 @@ class AuthController extends Controller
         // generate Auth
 
         $token = Auth::login($user);
-
+        
       return $this->returnData('user',$user,'register Successfully',$token);
 
 
