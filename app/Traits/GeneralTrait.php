@@ -5,9 +5,7 @@ namespace App\Traits;
 trait GeneralTrait
 {
 
-    public function getCurrentLang(){
-        return app()->getLocale();
-    }
+
     public function returnError($errNum, $msg){
         return response()->json([
             'status'=>false,
@@ -22,12 +20,13 @@ trait GeneralTrait
             'msg'=>$msg
         ];
     }
-    public function returnData($key,$value,$msg=""){
+    public function returnData($key,$value,$msg="",$token){
         return response()->json([
             'status'=>true,
             'errNum'=>"S000",
             'msg'=>$msg,
             $key=>$value,
+            'token'=>$token
         ]);
     }
 
@@ -40,20 +39,7 @@ trait GeneralTrait
         return $code;
     }
 
-    public function getErrorCode($input){
-        if($input=="name"){
-            return 'E001';
-        } else if($input=="password"){
-            return 'E002';
-        }
-        else if($input=="mobile"){
-            return 'E003';
-        }
 
-        else{
-            return "";
-        }
-    }
 
 }
 

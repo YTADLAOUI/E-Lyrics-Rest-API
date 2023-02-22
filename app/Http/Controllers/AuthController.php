@@ -10,12 +10,16 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
     // trait to generate Error and success message
     use GeneralTrait;
-
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login','register']]);
+    }
     // login
     public function login(Request $request){
 
@@ -41,11 +45,12 @@ class AuthController extends Controller
         if(!$token)
             return $this->returnError('E001','email and password not correct');
 
-     //get admin with token
+    // generate Auth
+
      $user = Auth::user();
      $user->remember_token=$token;
 //return token jwt
-      return $this->returnData('user',$user,'succes');
+    return $this->returnData('user',$user,'succes',$token);
 
     }catch(Exception $e){
         return $this->returnError($e->getCode(),$e->getMessage());
@@ -60,7 +65,7 @@ class AuthController extends Controller
 
             // validation
      try{
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -75,16 +80,26 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // generate Auth
 
-      return $this->returnData('user',$user,'register Successfully');
+        $token = Auth::login($user);
+
+      return $this->returnData('user',$user,'register Successfully',$token);
 
 
     }
     catch(Exception $e){
         return $this->returnError($e->getCode(),$e->getMessage());
     }
+}
+// logout
+public function logout()
+    {
 
-
+            Auth::logout();
+            return $this->returnSuccessMessage("Logout has been success!","S002");
 
 }
+
+
 }
