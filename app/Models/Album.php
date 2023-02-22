@@ -16,4 +16,7 @@ class Album extends Model
         'name',
         'release_date'
     ];
+    public function song(){
+        return $this->belongsTo(song::class);
+    }
 }

@@ -14,4 +14,11 @@ class song extends Model
     public function lyrics(){
         return $this->belongsTo(Lyric::class);
     }
+    public function album(){
+        return $this->hasOne(Album::class);
+    }
+    public function atiste(){
+        return $this->hasOne(Artist::class);
+    }
+
 }
