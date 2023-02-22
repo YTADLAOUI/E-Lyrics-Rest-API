@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\song;
+use App\Models\Lyric;
 use Illuminate\Http\Request;
 
-class ControllerSongs extends Controller
+class LyricsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,9 @@ class ControllerSongs extends Controller
      */
     public function index()
     {
-        $songs= song::all();
-        return $songs->toJson();
+        $lyrics= Lyric::all();
+        return $lyrics->toJson();
+        //return response()->json($lyrics);
     }
 
     /**
@@ -25,7 +26,7 @@ class ControllerSongs extends Controller
      */
     public function create()
     {
-        return 'dashbord';
+      return 'dashbord';
     }
 
     /**
@@ -37,7 +38,7 @@ class ControllerSongs extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        song::create($input);
+        Lyric::create($input);
         return 'creation sucss';
     }
 
@@ -48,9 +49,8 @@ class ControllerSongs extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $song = song::find($id);
-              return $song->toJson();
+    {        $lyr = Lyric::find($id);
+              return $lyr->toJson();
     }
 
     /**
@@ -61,8 +61,7 @@ class ControllerSongs extends Controller
      */
     public function edit($id)
     {
-        $song=song::find($id);
-        return $song->toJson();
+        $prd = Lyric::find($id);
     }
 
     /**
@@ -74,10 +73,10 @@ class ControllerSongs extends Controller
      */
     public function update(Request $request, $id)
     {
-        $song=song::find($id);
+        $lyric = Lyric::find($id);
         $input=$request->all();
-        $song->update($input);
-        return $song->toJson();
+        $lyric->update($input);
+
     }
 
     /**
@@ -88,7 +87,6 @@ class ControllerSongs extends Controller
      */
     public function destroy($id)
     {
-        song::destroy($id);
-        return 'delete sucss';
+        Lyric::destroy($id);
     }
 }

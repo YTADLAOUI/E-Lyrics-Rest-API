@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lyric;
+use App\Models\song;
 use Illuminate\Http\Request;
 
-class ControllerLyrics extends Controller
+class SongsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,8 @@ class ControllerLyrics extends Controller
      */
     public function index()
     {
-        $lyrics= Lyric::all();
-        return $lyrics->toJson();
-        //return response()->json($lyrics);
+        $songs= song::all();
+        return $songs->toJson();
     }
 
     /**
@@ -26,7 +25,7 @@ class ControllerLyrics extends Controller
      */
     public function create()
     {
-      return 'dashbord';
+        return 'dashbord';
     }
 
     /**
@@ -38,7 +37,7 @@ class ControllerLyrics extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        Lyric::create($input);
+        song::create($input);
         return 'creation sucss';
     }
 
@@ -49,8 +48,9 @@ class ControllerLyrics extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {        $lyr = Lyric::find($id);
-              return $lyr->toJson();
+    {
+        $song = song::find($id);
+              return $song->toJson();
     }
 
     /**
@@ -61,7 +61,8 @@ class ControllerLyrics extends Controller
      */
     public function edit($id)
     {
-        $prd = Lyric::find($id);
+        $song=song::find($id);
+        return $song->toJson();
     }
 
     /**
@@ -73,10 +74,10 @@ class ControllerLyrics extends Controller
      */
     public function update(Request $request, $id)
     {
-        $lyric = Lyric::find($id);
+        $song=song::find($id);
         $input=$request->all();
-        $lyric->update($input);
-        
+        $song->update($input);
+        return $song->toJson();
     }
 
     /**
@@ -87,6 +88,7 @@ class ControllerLyrics extends Controller
      */
     public function destroy($id)
     {
-        Lyric::destroy($id);
+        song::destroy($id);
+        return 'delete sucss';
     }
 }
