@@ -14,9 +14,10 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -36,10 +37,13 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        // ...
+
+        'api' => [
+                'driver' => 'jwt',
+                'provider' => 'users',
         ],
+
     ],
 
     /*
@@ -58,6 +62,7 @@ return [
     | Supported: "database", "eloquent"
     |
     */
+
 
     'providers' => [
         'users' => [
@@ -85,7 +90,6 @@ return [
     | they have less time to be guessed. You may change this as needed.
     |
     */
-
     'passwords' => [
         'users' => [
             'provider' => 'users',
