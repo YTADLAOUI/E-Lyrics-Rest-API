@@ -26,13 +26,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
-
 });
 
-
-// Route::controller(AlbumController::class)->group(function () {
-//     Route::post('store', 'store');
-// });
-
-
+//fouad
 Route::apiResource('albums', AlbumController::class);
+//fouad
