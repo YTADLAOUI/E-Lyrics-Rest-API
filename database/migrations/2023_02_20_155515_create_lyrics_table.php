@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('lyrics', function (Blueprint $table) {
             $table->id();
             $table->string('title', 255);
-            $table->text('contetnt');
+            $table->text('content');
             $table->timestamps();
         });
     }
