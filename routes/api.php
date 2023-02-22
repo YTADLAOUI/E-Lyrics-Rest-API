@@ -24,7 +24,13 @@ use App\Http\Controllers\AuthController;
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
-    Route::post('logout', 'logout');
+
+});
+
+Route::group(['middleware' => ['token-verify']], function() {
+
+    Route::post('logout',[AuthController::class,'logout']);
+    Route::post('profil',[AuthController::class,'profil']);
 
 });
 
