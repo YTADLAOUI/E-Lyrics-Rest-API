@@ -23,26 +23,21 @@ use App\Http\Controllers\ControllerLyrics;
 // });
 
 //PUBLIC
-Route::apiResource('/artist', ArtistController::class);
+Route::apiResource('/artists', ArtistController::class);
 
 //PRIVATE
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
-
 });
-Route::resource('/lyrics',ControllerLyrics::class);
+Route::resource('/lyrics', ControllerLyrics::class);
 
-Route::group(['middleware' => ['token-verify']], function() {
-
-    Route::post('logout',[AuthController::class,'logout']);
-    Route::post('profil',[AuthController::class,'profil']);
-
+Route::group(['middleware' => ['token-verify']], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('profil', [AuthController::class, 'profil']);
 });
 
 //fouad
 Route::apiResource('albums', AlbumController::class);
 //fouad
-
-
