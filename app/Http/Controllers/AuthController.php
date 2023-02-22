@@ -21,43 +21,44 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
     // login
-    public function login(Request $request){
+   // login
+   public function login(Request $request){
 
 
-        // validation
-        try{
-        $rules=[
+    // validation
+    try{
+    $rules=[
 
-            'email'=>'required',
-            'password'=>'required'
-        ];
-        $validator = Validator::make($request->all(),$rules);
+        'email'=>'required',
+        'password'=>'required'
+    ];
+    $validator = Validator::make($request->all(),$rules);
 
-        if($validator->fails()){
-            $code=$this->returnCodeAccordingToInput($validator);
-            return $this->returnValidationError($code,$validator);
-        }
+    if($validator->fails()){
+        return $this->returnError('E004','email or password not Exist');
 
-   //login
-   $credentiel= $request->only(['email','password']);
+    }
 
-   $token = Auth::attempt($credentiel);
-        if(!$token)
-            return $this->returnError('E001','email and password not correct');
+//login
+$credentiel= $request->only(['email','password']);
 
-    // generate Auth
+$token = JWTAuth::attempt($credentiel);
+    if(!$token)
+        return $this->returnError('E001','email and password not correct');
 
-     $user = Auth::user();
-     $user->remember_token=$token;
+// generate Auth
+
+ $user = JWTAuth::user();
+ $user->remember_token=$token;
 //return token jwt
-    return $this->returnData('user',$user,'succes',$token);
+return $this->returnData('user',$user,'succes',$token);
 
-    }catch(Exception $e){
-        return $this->returnError($e->getCode(),$e->getMessage());
-    }
+}catch(Exception $e){
+    return $this->returnError($e->getCode(),$e->getMessage());
+}
 
 
-    }
+}
 
     // register
     public function register(Request $request)
@@ -66,12 +67,17 @@ class AuthController extends Controller
             // validation
      try{
 
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
 
+        if($validator->fails()){
+
+                return $this->returnError('E003','Some inputs Not correct!');
+        }
 
 
         $user = User::create([
@@ -82,7 +88,7 @@ class AuthController extends Controller
 
         // generate Auth
 
-        $token = Auth::login($user);
+        $token = JWTAuth::fromUser($user);
 
       return $this->returnData('user',$user,'register Successfully',$token);
 
