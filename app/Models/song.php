@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lyric extends Model
+class song extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'title',
-        'contetnt',
-        'song_ID'
+        'title','date','artist_ID','album_ID','user_ID'
     ];
-    public function song(){
-        return $this->hasOne(song::class);
+    public function lyrics(){
+        return $this->belongsTo(Lyric::class);
     }
 }
