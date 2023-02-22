@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\AlbumController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -36,4 +37,9 @@ Route::group(['middleware' => ['token-verify']], function() {
     Route::post('profil',[AuthController::class,'profil']);
 
 });
+
+//fouad
+Route::apiResource('albums', AlbumController::class);
+//fouad
+
 
