@@ -8,23 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Validators\Validator;
+use Illuminate\Support\Facades\Validator;
 
 
 class ProfileController extends Controller
 {
     use GeneralTrait;
-    //
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+
 
     public function change_password(Request $request)
     {
 
         $email = $request->email;
         $user = User::where('email', $email)->first();
+        dd($user);
         if (!$user) {
             return $this->returnError('E404', 'user not found');
         } else {
@@ -37,32 +34,31 @@ class ProfileController extends Controller
 
     public function profile_edit($id, Request $request)
     {
-        $request->validate(
-            [
-                'name' => 'required|min:5',
-                'email' => 'required',
-                'password' => 'required'
-            ],
-            [
-                'name.required' => 'the fill of the name it must be done',
-                'email.required' => 'the fill of the name it must be done',
-                'password.required' => ' fill password required',
-                'name.min' => 'the character must be over 5'
-            ]
-        );
+
 
         $user = User::find($id);
-
 
 
 
         if (!$user) {
             return $this->returnError('E001', 'User not found.');
         } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|min:5',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'The given data was invalid.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
             $user->name = $request->name;
-            $user->password = $request->password;
+            $user->password =  Hash::make($request->password);
             $user->email = $request->email;
             $user->save();
+
 
             $data = [
                 'id' => $user->id,
@@ -70,7 +66,9 @@ class ProfileController extends Controller
                 'name' => $user->name,
                 'status' => 200,
             ];
-        return response()->json($data);
+
+            return $this->returnData("User",$data,"user updated successfuly",'');
+
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lyric;
+use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class LyricsController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,11 @@ class LyricsController extends Controller
      */
     public function index()
     {
-        $lyrics= Lyric::all();
-        return $lyrics->toJson();
-        //return response()->json($lyrics);
+        $role = Role::get();
+        if (is_null($role)) {
+            return response()->json('Not found any role!', 404);
+        }
+        return response()->json($role, 200);
     }
 
     /**
@@ -27,7 +29,7 @@ class LyricsController extends Controller
      */
     public function create()
     {
-      return 'dashbord';
+        //
     }
 
     /**
@@ -45,56 +47,65 @@ class LyricsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $input = $request->all();
-        Lyric::create($input);
-        return 'creation sucss';
+        $create = Role::create($request->all());
+        if (is_null($create)) {
+            return response()->json('Somthing not correct for this create role please try again!', 404);
+        }
+        return response()->json($create, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {        $lyr = Lyric::find($id);
-              return $lyr->toJson();
+    public function show(Role $role)
+    {
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        $prd = Lyric::find($id);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $lyric = Lyric::find($id);
-        $input=$request->all();
-        $lyric->update($input);
-
+        $role = Role::find($id);
+        if (is_null($role)) {
+            return response()->json('Somthing not correct for this update role please try again!', 404);
+        }
+        $role->update($request->all());
+        return response()->json($role, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Lyric::destroy($id);
+        $role = Role::find($id);
+        if (is_null($role)) {
+            return response()->json('deleted failed!', 404);
+        }
+        $role->delete();
+        return response()->json(null, 204);
     }
 }

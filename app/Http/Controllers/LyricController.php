@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Artist;
+use App\Models\Lyric;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
-class ArtistController extends Controller
+class LyricController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +15,9 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        $artist = Artist::with('song')->get();
-        if (is_null($artist)) {
-            return response()->json('Not found any data!', 404);
-        }
-        return response()->json($artist, 200);
+        $lyrics = Lyric::with('song')->get();
+        return $lyrics->toJson();
+        //return response()->json($lyrics);
     }
 
     /**
@@ -30,7 +27,7 @@ class ArtistController extends Controller
      */
     public function create()
     {
-        //
+        return 'dashbord';
     }
 
     /**
@@ -42,17 +39,17 @@ class ArtistController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name'  => 'required|min:2'
+            'title'  => 'required|min:2',
+            'content' => 'required',
+            'song_ID' => 'required'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $create = Artist::create($request->all());
-        if (is_null($create)) {
-            return response()->json('Somthing not correct for this create artist please try again!', 404);
-        }
-        return response()->json($create, 201);
+        $input = $request->all();
+        Lyric::create($input);
+        return 'creation sucss';
     }
 
     /**
@@ -63,11 +60,8 @@ class ArtistController extends Controller
      */
     public function show($id)
     {
-        $artist = Artist::find($id);
-        if (is_null($artist)) {
-            return response()->json('Artist not found!', 404);
-        }
-        return response()->json($artist, 200);
+        $lyr = Lyric::find($id);
+        return $lyr->toJson();
     }
 
     /**
@@ -78,7 +72,7 @@ class ArtistController extends Controller
      */
     public function edit($id)
     {
-        //
+        $prd = Lyric::find($id);
     }
 
     /**
@@ -90,12 +84,9 @@ class ArtistController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $artist = Artist::find($id);
-        if (is_null($artist)) {
-            return response()->json('Somthing not correct for this update artist please try again!', 404);
-        }
-        $artist->update($request->all());
-        return response()->json($artist, 200);
+        $lyric = Lyric::find($id);
+        $input = $request->all();
+        $lyric->update($input);
     }
 
     /**
@@ -106,11 +97,6 @@ class ArtistController extends Controller
      */
     public function destroy($id)
     {
-        $artist = Artist::find($id);
-        if (is_null($artist)) {
-            return response()->json('deleted failed!', 404);
-        }
-        $artist->delete();
-        return response()->json(null, 204);
+        Lyric::destroy($id);
     }
 }
