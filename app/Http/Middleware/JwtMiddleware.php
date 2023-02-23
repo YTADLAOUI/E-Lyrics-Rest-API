@@ -21,8 +21,11 @@ use GeneralTrait;
     public function handle($request, Closure $next)
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate();
+            
+         JWTAuth::parseToken()->authenticate();
+
         } catch (Exception $e) {
+
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
 
                 return $this->returnError("E005","Token is Invalid");

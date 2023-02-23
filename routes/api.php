@@ -32,18 +32,30 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
 });
 
-//PRIVATE
-Route::group(['middleware' => ['token-verify']], function () {
-    Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
-    Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('profil', [AuthController::class, 'profil']);
+//PRIVATE (Admin)
+Route::group(['middleware' => ['token-verify','admin-verify']], function () {
+
     Route::apiResource('/artists', ArtistController::class);
     Route::apiResource('/roles', RoleController::class);
     Route::apiResource('/albums', AlbumController::class);
-    Route::resource('/lyrics', LyricController::class);
     Route::resource('/songs', SongController::class);
 });
+// (User)
+Route::group(['middleware' => ['token-verify']], function () {
+
+    Route::apiResource('/artists', ArtistController::class)->only('index');
+    Route::apiResource('/albums', AlbumController::class)->only('index');
+    Route::resource('/songs', SongController::class)->only('index');
+
+    Route::resource('/lyrics', LyricController::class);
+
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
+    Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
+    Route::post('profil', [AuthController::class, 'profil']);
+
+});
+
 
 
 // Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
