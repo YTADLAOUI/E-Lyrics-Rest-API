@@ -27,7 +27,7 @@ class AuthController extends Controller
     try{
     $rules=[
 
-        'email'=>'required',
+        'email'=>'required|email',
         'password'=>'required'
     ];
     $validator = Validator::make($request->all(),$rules);
@@ -61,7 +61,7 @@ return $this->returnData('user',$user,'succes',$token);
     // register
     public function register(Request $request)
     {
-       
+
 
             // validation
      try{
@@ -105,7 +105,8 @@ public function logout()
                 $user = JWTAuth::parseToken()->authenticate();
 
                 if (!$user) {
-                        return response()->json(['user_not_found'], 404);
+                return  $this->returnError('E404','user_not_found!');
+
                 }
 
             } catch (TokenExpiredException $e) {

@@ -43,9 +43,9 @@ Route::group(['middleware' => ['token-verify','admin-verify']], function () {
 // (User)
 Route::group(['middleware' => ['token-verify']], function () {
 
-    Route::apiResource('/artists', ArtistController::class)->only('index');
-    Route::apiResource('/albums', AlbumController::class)->only('index');
-    Route::resource('/songs', SongController::class)->only('index');
+    Route::apiResource('/artists', ArtistController::class)->only('index','show');
+    Route::apiResource('/albums', AlbumController::class)->only('index','show');
+    Route::resource('/songs', SongController::class)->only('index','show');
 
     Route::resource('/lyrics', LyricController::class);
 
