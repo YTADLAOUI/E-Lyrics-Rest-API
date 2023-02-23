@@ -16,7 +16,7 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        $artist = Artist::get();
+        $artist = Artist::with('song')->get();
         if (is_null($artist)) {
             return response()->json('Not found any data!', 404);
         }

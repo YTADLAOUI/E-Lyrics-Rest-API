@@ -15,7 +15,7 @@ class LyricController extends Controller
      */
     public function index()
     {
-        $lyrics = Lyric::all();
+        $lyrics = Lyric::with('song')->get();
         return $lyrics->toJson();
         //return response()->json($lyrics);
     }
