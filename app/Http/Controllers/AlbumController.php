@@ -21,7 +21,7 @@ class albumController extends Controller
     public function index(Request $request)
     {
         // $musics = Album::find(1)->musics;
-        $albums = Album::orderBy('id')->get();
+        $albums = Album::with('song')->orderBy('id')->get();
 
         return response()->json([
             'status' => 'success',
