@@ -31,7 +31,7 @@ Route::apiResource('/artist', ArtistController::class);
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
-    Route::post('logout', 'logout');
+
 });
 Route::resource('/lyrics', ControllerLyrics::class);
 
@@ -40,6 +40,9 @@ Route::group(['middleware' => ['token-verify']], function () {
     Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('profil', [AuthController::class, 'profil']);
+    Route::post('logout', [AuthController::class,'logout']);
+
+
 });
 
 

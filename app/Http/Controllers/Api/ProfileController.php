@@ -70,7 +70,7 @@ class ProfileController extends Controller
                 'name' => $user->name,
                 'status' => 200,
             ];
-            dd($data);
+        return response()->json($data);
         }
     }
 }
