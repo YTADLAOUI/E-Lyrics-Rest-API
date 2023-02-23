@@ -39,7 +39,9 @@ class LyricsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name'  => 'required|min:2'
+            'title'  => 'required|min:2',
+            'content'=>'required',
+            'song_ID'=>'required'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
