@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Validator;
 use App\Models\song;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class SongController extends Controller
     public function index()
     {
 
-        $songs= song::with(['lyrics','album','atiste'])->get();
+        $songs = song::with(['album', 'artist'])->get();
         return $songs->toJson();
     }
 
@@ -37,12 +38,12 @@ class SongController extends Controller
      */
     public function store(Request $request)
     {
-         $rules = [
+        $rules = [
             'Title'  => 'required|min:2',
-            'date'=>'required',
-            'artist_ID'=>'required',
-            'album_ID'=>'required',
-            'user_ID'=>'required'
+            'date' => 'required',
+            'artist_ID' => 'required',
+            'album_ID' => 'required',
+            'user_ID' => 'required'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

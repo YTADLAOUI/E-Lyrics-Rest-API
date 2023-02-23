@@ -38,12 +38,14 @@ Route::group(['middleware' => ['token-verify']], function () {
     Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('profil', [AuthController::class, 'profil']);
-    Route::apiResource('/artists', ArtistController::class);
-    Route::apiResource('/roles', RoleController::class);
-    Route::apiResource('/albums', AlbumController::class);
-    Route::resource('/lyrics', LyricController::class);
-    Route::resource('/songs', SongController::class);
 });
+
+
+Route::apiResource('/artists', ArtistController::class);
+Route::apiResource('/roles', RoleController::class);
+Route::apiResource('/albums', AlbumController::class);
+Route::resource('/lyrics', LyricController::class);
+Route::resource('/songs', SongController::class);
 
 
 // Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');

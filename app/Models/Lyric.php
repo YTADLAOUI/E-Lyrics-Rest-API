@@ -16,6 +16,6 @@ class Lyric extends Model
 
     public function song()
     {
-        return $this->hasOne(song::class);
+        return $this->belongsTo(song::class, 'song_ID', 'id');
     }
 }
