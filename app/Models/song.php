@@ -8,17 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class song extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'title','date','artist_ID','album_ID','user_ID'
+    protected $fillable = [
+        'title', 'date', 'artist_ID', 'album_ID', 'user_ID'
     ];
-    public function lyrics(){
-        return $this->belongsTo(Lyric::class);
+    public function lyrics()
+    {
+        return $this->hasMany(Lyric::class);
     }
-    public function album(){
-        return $this->belongsTo(Album::class);
+    public function album()
+    {
+        return $this->belongsTo(Album::class, 'album_ID', 'id');
     }
-    public function atiste(){
-        return $this->belongsTo(Artist::class);
+    public function artist()
+    {
+        return $this->belongsTo(Artist::class, 'artist_ID', 'id');
     }
-
 }
