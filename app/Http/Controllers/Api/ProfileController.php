@@ -25,6 +25,7 @@ class ProfileController extends Controller
 
         $email = $request->email;
         $user = User::where('email', $email)->first();
+        dd($user);
         if (!$user) {
             return $this->returnError('E404', 'user not found');
         } else {
@@ -37,22 +38,9 @@ class ProfileController extends Controller
 
     public function profile_edit($id, Request $request)
     {
-        $request->validate(
-            [
-                'name' => 'required|min:5',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required'
-            ],
-            [
-                'name.required' => 'the fill of the name it must be done',
-                'email.required' => 'the fill of the name it must be done',
-                'password.required' => ' fill password required',
-                'name.min' => 'the character must be over 5'
-            ]
-        );
+
 
         $user = User::find($id);
-
 
 
 
@@ -60,17 +48,26 @@ class ProfileController extends Controller
             return $this->returnError('E001', 'User not found.');
         } else {
             $user->name = $request->name;
-            $user->password = $request->password;
+            $user->password =  Hash::make($request->password);
             $user->email = $request->email;
             $user->save();
-
+            $request->validate(
+                [
+                    'name' => 'required|min:5',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => 'required'
+                ]
+            );
+            // if ($request->fails()) {
+            //     return back()->withErrors($request->errors())->withInput();
+            // }
             $data = [
                 'id' => $user->id,
                 'email' => $user->email,
                 'name' => $user->name,
                 'status' => 200,
             ];
-            return $this->returnData('name', $data, 'success', ' ');
+            return response()->json($data);
         }
     }
 }

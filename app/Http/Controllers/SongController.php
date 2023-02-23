@@ -15,7 +15,7 @@ class SongController extends Controller
     public function index()
     {
 
-        $songs= song::all();
+        $songs= song::with(['lyrics','album','atiste'])->get();
         return $songs->toJson();
     }
 

@@ -16,6 +16,6 @@ class Lyric extends Model
 
     public function song()
     {
-        return $this->hasMany(song::class);
+        return $this->hasOne(song::class);
     }
 }
