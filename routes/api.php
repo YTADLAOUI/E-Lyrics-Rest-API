@@ -7,10 +7,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\LyricController;
-use App\Http\Controllers\LyricsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SongController;
-use App\Http\Controllers\SongsController;
+
 
 /*
 |--------------------------------------------------------------------------
