@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\song;
 use Illuminate\Http\Request;
 
-class SongsController extends Controller
+class SongController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -62,7 +62,7 @@ class SongsController extends Controller
     public function show($id)
     {
         $song = song::find($id);
-              return $song->toJson();
+        return $song->toJson();
     }
 
     /**
@@ -73,7 +73,7 @@ class SongsController extends Controller
      */
     public function edit($id)
     {
-        $song=song::find($id);
+        $song = song::find($id);
         return $song->toJson();
     }
 
@@ -86,8 +86,8 @@ class SongsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $song=song::find($id);
-        $input=$request->all();
+        $song = song::find($id);
+        $input = $request->all();
         $song->update($input);
         return $song->toJson();
     }

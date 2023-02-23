@@ -6,7 +6,7 @@ use App\Models\Lyric;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class LyricsController extends Controller
+class LyricController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class LyricsController extends Controller
      */
     public function index()
     {
-        $lyrics= Lyric::all();
+        $lyrics = Lyric::all();
         return $lyrics->toJson();
         //return response()->json($lyrics);
     }
@@ -27,7 +27,7 @@ class LyricsController extends Controller
      */
     public function create()
     {
-      return 'dashbord';
+        return 'dashbord';
     }
 
     /**
@@ -40,8 +40,8 @@ class LyricsController extends Controller
     {
         $rules = [
             'title'  => 'required|min:2',
-            'content'=>'required',
-            'song_ID'=>'required'
+            'content' => 'required',
+            'song_ID' => 'required'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -59,8 +59,9 @@ class LyricsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {        $lyr = Lyric::find($id);
-              return $lyr->toJson();
+    {
+        $lyr = Lyric::find($id);
+        return $lyr->toJson();
     }
 
     /**
@@ -84,9 +85,8 @@ class LyricsController extends Controller
     public function update(Request $request, $id)
     {
         $lyric = Lyric::find($id);
-        $input=$request->all();
+        $input = $request->all();
         $lyric->update($input);
-
     }
 
     /**
