@@ -10,7 +10,6 @@ use App\Http\Controllers\LyricController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SongController;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
