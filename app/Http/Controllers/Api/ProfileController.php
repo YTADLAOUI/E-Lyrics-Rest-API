@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class ProfileController extends Controller
 {
     use GeneralTrait;
-    //
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+
 
     public function change_password(Request $request)
     {
@@ -62,9 +58,7 @@ class ProfileController extends Controller
                     'errors' => $validator->errors(),
                 ], 422);
             }
-            // if ($request->fails()) {
-            //     return back()->withErrors($request->errors())->withInput();
-            // }
+
             $data = [
                 'id' => $user->id,
                 'email' => $user->email,
