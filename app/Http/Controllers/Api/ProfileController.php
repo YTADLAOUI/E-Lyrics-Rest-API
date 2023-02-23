@@ -43,13 +43,9 @@ class ProfileController extends Controller
         if (!$user) {
             return $this->returnError('E001', 'User not found.');
         } else {
-            $user->name = $request->name;
-            $user->password =  Hash::make($request->password);
-            $user->email = $request->email;
-            $user->save();
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:5',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users,email',
                 'password' => 'required'
             ]);
             if ($validator->fails()) {
@@ -58,6 +54,11 @@ class ProfileController extends Controller
                     'errors' => $validator->errors(),
                 ], 422);
             }
+            $user->name = $request->name;
+            $user->password =  Hash::make($request->password);
+            $user->email = $request->email;
+            $user->save();
+
 
             $data = [
                 'id' => $user->id,
@@ -65,7 +66,9 @@ class ProfileController extends Controller
                 'name' => $user->name,
                 'status' => 200,
             ];
-            return response()->json($data)->returnSuccessMessage('reset password succefuly ');
+
+            return $this->returnData("User",$data,"user updated successfuly",'');
+
         }
     }
 }
