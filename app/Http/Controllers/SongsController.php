@@ -38,7 +38,11 @@ class SongsController extends Controller
     public function store(Request $request)
     {
          $rules = [
-            'name'  => 'required|min:2'
+            'Title'  => 'required|min:2',
+            'date'=>'required',
+            'artist_ID'=>'required',
+            'album_ID'=>'required',
+            'user_ID'=>'required'
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
