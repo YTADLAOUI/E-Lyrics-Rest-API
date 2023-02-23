@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Lyric;
+use Illuminate\Support\Facades\Validator;
+use App\Models\song;
 use Illuminate\Http\Request;
 
-class LyricsController extends Controller
+class SongController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class LyricsController extends Controller
      */
     public function index()
     {
-        $lyrics= Lyric::all();
-        return $lyrics->toJson();
-        //return response()->json($lyrics);
+
+        $songs= song::all();
+        return $songs->toJson();
     }
 
     /**
@@ -26,7 +26,7 @@ class LyricsController extends Controller
      */
     public function create()
     {
-      return 'dashbord';
+        return 'dashbord';
     }
 
     /**
@@ -37,8 +37,19 @@ class LyricsController extends Controller
      */
     public function store(Request $request)
     {
+         $rules = [
+            'Title'  => 'required|min:2',
+            'date'=>'required',
+            'artist_ID'=>'required',
+            'album_ID'=>'required',
+            'user_ID'=>'required'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
         $input = $request->all();
-        Lyric::create($input);
+        song::create($input);
         return 'creation sucss';
     }
 
@@ -49,8 +60,9 @@ class LyricsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {        $lyr = Lyric::find($id);
-              return $lyr->toJson();
+    {
+        $song = song::find($id);
+        return $song->toJson();
     }
 
     /**
@@ -61,7 +73,8 @@ class LyricsController extends Controller
      */
     public function edit($id)
     {
-        $prd = Lyric::find($id);
+        $song = song::find($id);
+        return $song->toJson();
     }
 
     /**
@@ -73,10 +86,10 @@ class LyricsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $lyric = Lyric::find($id);
-        $input=$request->all();
-        $lyric->update($input);
-
+        $song = song::find($id);
+        $input = $request->all();
+        $song->update($input);
+        return $song->toJson();
     }
 
     /**
@@ -87,6 +100,7 @@ class LyricsController extends Controller
      */
     public function destroy($id)
     {
-        Lyric::destroy($id);
+        song::destroy($id);
+        return 'delete sucss';
     }
 }

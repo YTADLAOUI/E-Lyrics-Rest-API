@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\song;
+use App\Models\Lyric;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class SongsController extends Controller
+class LyricController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,9 @@ class SongsController extends Controller
      */
     public function index()
     {
-        $songs = song::all();
-        return $songs->toJson();
+        $lyrics = Lyric::all();
+        return $lyrics->toJson();
+        //return response()->json($lyrics);
     }
 
     /**
@@ -36,8 +38,17 @@ class SongsController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'title'  => 'required|min:2',
+            'content' => 'required',
+            'song_ID' => 'required'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
         $input = $request->all();
-        song::create($input);
+        Lyric::create($input);
         return 'creation sucss';
     }
 
@@ -49,8 +60,8 @@ class SongsController extends Controller
      */
     public function show($id)
     {
-        $song = song::find($id);
-        return $song->toJson();
+        $lyr = Lyric::find($id);
+        return $lyr->toJson();
     }
 
     /**
@@ -61,8 +72,7 @@ class SongsController extends Controller
      */
     public function edit($id)
     {
-        $song = song::find($id);
-        return $song->toJson();
+        $prd = Lyric::find($id);
     }
 
     /**
@@ -74,10 +84,9 @@ class SongsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $song = song::find($id);
+        $lyric = Lyric::find($id);
         $input = $request->all();
-        $song->update($input);
-        return $song->toJson();
+        $lyric->update($input);
     }
 
     /**
@@ -88,7 +97,6 @@ class SongsController extends Controller
      */
     public function destroy($id)
     {
-        song::destroy($id);
-        return 'delete sucss';
+        Lyric::destroy($id);
     }
 }
