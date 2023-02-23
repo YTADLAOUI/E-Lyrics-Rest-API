@@ -40,7 +40,7 @@ class ProfileController extends Controller
         $request->validate(
             [
                 'name' => 'required|min:5',
-                'email' => 'required',
+                'email' => 'required|email|unique:users,email',
                 'password' => 'required'
             ],
             [
@@ -70,7 +70,7 @@ class ProfileController extends Controller
                 'name' => $user->name,
                 'status' => 200,
             ];
-            dd($data);
+            return $this->returnData('name', $data, 'success', ' ');
         }
     }
 }
