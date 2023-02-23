@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Validators\Validator;
+use Illuminate\Support\Facades\Validator;
 
 
 class ProfileController extends Controller
@@ -51,13 +51,17 @@ class ProfileController extends Controller
             $user->password =  Hash::make($request->password);
             $user->email = $request->email;
             $user->save();
-            $request->validate(
-                [
-                    'name' => 'required|min:5',
-                    'email' => 'required|string|email|max:255|unique:users',
-                    'password' => 'required'
-                ]
-            );
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|min:5',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'The given data was invalid.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
             // if ($request->fails()) {
             //     return back()->withErrors($request->errors())->withInput();
             // }
@@ -67,7 +71,7 @@ class ProfileController extends Controller
                 'name' => $user->name,
                 'status' => 200,
             ];
-            return response()->json($data);
+            return response()->json($data)->returnSuccessMessage('reset password succefuly ');
         }
     }
 }
