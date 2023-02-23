@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
     public function profile_edit($id, Request $request)
     {
-      
+
 
         $user = User::find($id);
 
@@ -51,8 +51,16 @@ class ProfileController extends Controller
             $user->password =  Hash::make($request->password);
             $user->email = $request->email;
             $user->save();
-            dd($user);
-
+            $request->validate(
+                [
+                    'name' => 'required|min:5',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => 'required'
+                ]
+            );
+            // if ($request->fails()) {
+            //     return back()->withErrors($request->errors())->withInput();
+            // }
             $data = [
                 'id' => $user->id,
                 'email' => $user->email,
