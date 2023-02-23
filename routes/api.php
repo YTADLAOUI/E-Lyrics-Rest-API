@@ -2,13 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ControllerLyrics;
 use App\Http\Controllers\Api\ProfileController;
 
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
