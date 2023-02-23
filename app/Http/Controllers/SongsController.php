@@ -14,7 +14,7 @@ class SongsController extends Controller
      */
     public function index()
     {
-        $songs= song::all();
+        $songs = song::all();
         return $songs->toJson();
     }
 
@@ -50,7 +50,7 @@ class SongsController extends Controller
     public function show($id)
     {
         $song = song::find($id);
-              return $song->toJson();
+        return $song->toJson();
     }
 
     /**
@@ -61,7 +61,7 @@ class SongsController extends Controller
      */
     public function edit($id)
     {
-        $song=song::find($id);
+        $song = song::find($id);
         return $song->toJson();
     }
 
@@ -74,8 +74,8 @@ class SongsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $song=song::find($id);
-        $input=$request->all();
+        $song = song::find($id);
+        $input = $request->all();
         $song->update($input);
         return $song->toJson();
     }
