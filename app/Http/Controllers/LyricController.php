@@ -64,7 +64,12 @@ class LyricController extends Controller
     public function show($id)
     {
         $lyr = Lyric::findOrFail($id);
+        if (is_null($lyr)) {
+            return $this->returnError('E016', 'Somthing not correct for this EDIT lyric please try again!');
+        }
+        
         return $lyr->toJson();
+
     }
 
     /**
@@ -76,6 +81,10 @@ class LyricController extends Controller
     public function edit($id)
     {
         $prd = Lyric::findOrFail($id);
+        if (is_null($prd)) {
+            return $this->returnError('E016', 'Somthing not correct for this EDIT lyric please try again!');
+        }
+        return $prd->toJson();
     }
 
     /**

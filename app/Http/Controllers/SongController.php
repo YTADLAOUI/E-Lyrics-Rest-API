@@ -62,6 +62,9 @@ class SongController extends Controller
     public function show($id)
     {
         $song = song::findOrFail($id);
+        if (is_null($song)) {
+            return $this->returnError('E016', 'Somthing not correct for this show song please try again!');
+        }
         return $song->toJson();
     }
 
@@ -74,6 +77,9 @@ class SongController extends Controller
     public function edit($id)
     {
         $song = song::findOrFail($id);
+        if (is_null($song)) {
+            return $this->returnError('E016', 'Somthing not correct for this EDIT lyric please try again!');
+        }
         return $song->toJson();
     }
 
@@ -87,6 +93,9 @@ class SongController extends Controller
     public function update(Request $request, $id)
     {
         $song = song::findOrFail($id);
+        if (is_null($song)) {
+            return $this->returnError('E016', 'Somthing not correct for this update lyric please try again!');
+        }
         $input = $request->all();
         $song->update($input);
         return $song->toJson();
