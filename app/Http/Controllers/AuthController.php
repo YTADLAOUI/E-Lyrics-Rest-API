@@ -19,90 +19,81 @@ class AuthController extends Controller
     // trait to generate Error and success message
     use GeneralTrait;
 
-   // login
-   public function login(Request $request){
-
-
-    // validation
-    try{
-    $rules=[
+    // login
+    public function login(Request $request)
+    {
+        // validation
+        try {
+            $rules = [
 
         'email'=>'required|email',
         'password'=>'required'
     ];
     $validator = Validator::make($request->all(),$rules);
 
-    if($validator->fails()){
-        return $this->returnError('E004','email or password not Exist');
+            if ($validator->fails()) {
+                return $this->returnError('E004', 'email or password not Exist');
+            }
 
+            //login
+            $credentiel = $request->only(['email', 'password']);
+
+            $token = JWTAuth::attempt($credentiel);
+            if (!$token)
+                return $this->returnError('E001', 'email and password not correct');
+
+            // generate Auth
+            $user = JWTAuth::user();
+            $user->remember_token = $token;
+            //return token jwt
+            return $this->returnData('user', $user, 'success', $token);
+        } catch (Exception $e) {
+            return $this->returnError($e->getCode(), $e->getMessage());
+        }
     }
-
-//login
-$credentiel= $request->only(['email','password']);
-
-$token = JWTAuth::attempt($credentiel);
-    if(!$token)
-        return $this->returnError('E001','email and password not correct');
-
-// generate Auth
-
- $user = JWTAuth::user();
- $user->remember_token=$token;
-//return token jwt
-return $this->returnData('user',$user,'succes',$token);
-
-}catch(Exception $e){
-    return $this->returnError($e->getCode(),$e->getMessage());
-}
-
-
-}
 
     // register
     public function register(Request $request)
     {
 
 
-            // validation
-     try{
+        // validation
+        try {
 
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+            ]);
 
-        if($validator->fails()){
+            if ($validator->fails()) {
 
-                return $this->returnError('E003','Some inputs Not correct!');
+                return $this->returnError('E003', 'Some inputs Not correct!');
+            }
+
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            // generate Auth
+
+            $token = JWTAuth::fromUser($user);
+
+            return $this->returnData('user', $user, 'register Successfully', $token);
+        } catch (Exception $e) {
+            return $this->returnError($e->getCode(), $e->getMessage());
         }
-
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        // generate Auth
-
-        $token = JWTAuth::fromUser($user);
-
-      return $this->returnData('user',$user,'register Successfully',$token);
-
-
     }
-    catch(Exception $e){
-        return $this->returnError($e->getCode(),$e->getMessage());
-    }
-}
-// logout
-public function logout()
+    // logout
+    public function logout()
     {
 
-            try {
-                $user = JWTAuth::parseToken()->authenticate();
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
 
                 if (!$user) {
                 return  $this->returnError('E404','user_not_found!');
@@ -111,57 +102,37 @@ public function logout()
 
             } catch (TokenExpiredException $e) {
 
-                return  $this->returnError('E404','token_expired!');
+            return  $this->returnError('E404', 'token_expired!');
+        } catch (TokenInvalidException $e) {
 
-
-
-            } catch (TokenInvalidException $e) {
-
-                return  $this->returnError('E404','token_invalid!');
-
-
-
-            } catch (JWTException $e) {
-                return  $this->returnError('E404','token_absent!');
-
-
-
-            }
-
-            Auth::logout();
-            return $this->returnSuccessMessage("Logout has been success!","S002");
-}
-// show profil
-public function profil(){
-    try {
-        $user = JWTAuth::parseToken()->authenticate();
-        if (!$user) {
-
-           return  $this->returnError('E404','user_not_found!');
-
+            return  $this->returnError('E404', 'token_invalid!');
+        } catch (JWTException $e) {
+            return  $this->returnError('E404', 'token_absent!');
         }
 
-} catch (TokenExpiredException $e) {
+        Auth::logout();
+        return $this->returnSuccessMessage("Logout has been success!", "S002");
+    }
+    // show profil
+    public function profil()
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            if (!$user) {
 
-    return  $this->returnError('E404','token_expired!');
+                return  $this->returnError('E404', 'user_not_found!');
+            }
+        } catch (TokenExpiredException $e) {
+
+            return  $this->returnError('E404', 'token_expired!');
+        } catch (TokenInvalidException $e) {
+
+            return  $this->returnError('E404', 'token_invalid!');
+        } catch (JWTException $e) {
+            return  $this->returnError('E404', 'token_absent!');
+        }
 
 
-
-} catch (TokenInvalidException $e) {
-
-    return  $this->returnError('E404','token_invalid!');
-
-
-
-} catch (JWTException $e) {
-    return  $this->returnError('E404','token_absent!');
-
-
-
-}
-
-
-return $this->returnData('user-profil',$user,"success","");
-}
-
+        return $this->returnData('user-profil', $user, "success", "");
+    }
 }

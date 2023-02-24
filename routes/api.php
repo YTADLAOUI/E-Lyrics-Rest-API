@@ -10,7 +10,6 @@ use App\Http\Controllers\LyricController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SongController;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +38,8 @@ Route::group(['middleware' => ['token-verify','admin-verify']], function () {
     Route::apiResource('/roles', RoleController::class);
     Route::apiResource('/albums', AlbumController::class);
     Route::resource('/songs', SongController::class);
+    Route::resource('/lyrics', LyricController::class);
+
 });
 // (User)
 Route::group(['middleware' => ['token-verify']], function () {
@@ -56,6 +57,13 @@ Route::group(['middleware' => ['token-verify']], function () {
 
 });
 
+
+
+// Route::apiResource('/artists', ArtistController::class);
+// Route::apiResource('/roles', RoleController::class);
+// Route::apiResource('/albums', AlbumController::class);
+// Route::resource('/lyrics', LyricController::class);
+// Route::resource('/songs', SongController::class);
 
 
 // Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');

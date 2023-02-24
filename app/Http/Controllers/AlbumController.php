@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAlbumRequest;
 use App\Models\Album;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class albumController extends Controller
 {
+    // use trait to handle error and success
+    use GeneralTrait;
 
     public function __construct()
     {
@@ -23,10 +26,11 @@ class albumController extends Controller
         // $musics = Album::find(1)->musics;
         $albums = Album::with('song')->orderBy('id')->get();
 
-        return response()->json([
-            'status' => 'success',
-            'albums' => $albums
-        ]);
+        $this->returnData('albums', $albums, "Success", '');
+        // return response()->json([
+        //     'status' => 'success',
+        //     'albums' => $albums
+        // ]);
     }
 
     /**

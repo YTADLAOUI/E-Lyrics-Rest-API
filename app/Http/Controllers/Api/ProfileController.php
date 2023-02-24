@@ -79,8 +79,7 @@ class ProfileController extends Controller
                 'status' => 200,
             ];
 
-            return $this->returnData("User",$data,"user updated successfuly",'');
-
+            return $this->returnData("User", $data, "user updated successfuly", '');
         }
     }
 }
