@@ -4,8 +4,6 @@ namespace App\Traits;
 
 trait GeneralTrait
 {
-
-
     public function returnError($errNum, $msg)
     {
         return response()->json([

@@ -18,6 +18,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
 });
 
+
 //PRIVATE (Admin)
 Route::group(['middleware' => ['token-verify','admin-verify']], function () {
 
@@ -43,4 +44,5 @@ Route::group(['middleware' => ['token-verify']], function () {
     Route::post('profil', [AuthController::class, 'profil']);
 
 });
+
 
