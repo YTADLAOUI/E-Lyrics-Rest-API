@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAlbumRequest;
 use App\Models\Album;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class albumController extends Controller
 {
@@ -23,14 +24,14 @@ class albumController extends Controller
      */
     public function index(Request $request)
     {
-        // $musics = Album::find(1)->musics;
+        // $songs = Album::find(2)->song;
         $albums = Album::with('song')->orderBy('id')->get();
 
-        $this->returnData('albums', $albums, "Success", '');
-        // return response()->json([
-        //     'status' => 'success',
-        //     'albums' => $albums
-        // ]);
+        // $this->returnData('albums', $albums, "Success", '');
+        return response()->json([
+            'status' => 'success',
+            'albums' => $albums
+        ]);
     }
 
     /**
@@ -49,8 +50,18 @@ class albumController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAlbumRequest $request)
+    public function store(Request $request)
     {
+
+        $rules = [
+            'name'  => 'required|min:2',
+            'release_date' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400); // 400 means bad request
+        }
+
         $album = Album::create($request->all());
 
         return response()->json([
@@ -93,8 +104,17 @@ class albumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreAlbumRequest $request, Album $album)
+    public function update(Request $request, Album $album)
     {
+        $rules = [
+            'name'  => 'required|min:2',
+            'release_date' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400); // 400 means bad request
+        }
+
         $album->update($request->all());
 
         if (!$album) {

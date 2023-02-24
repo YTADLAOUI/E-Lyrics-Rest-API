@@ -39,7 +39,7 @@ class SongController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'Title'  => 'required|min:2',
+            'title'  => 'required|min:2',
             'date' => 'required',
             'artist_ID' => 'required',
             'album_ID' => 'required',
