@@ -31,20 +31,39 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
 });
 
-//PRIVATE
+//PRIVATE (Admin)
+Route::group(['middleware' => ['token-verify','admin-verify']], function () {
+
+    Route::apiResource('/artists', ArtistController::class);
+    Route::apiResource('/roles', RoleController::class);
+    Route::apiResource('/albums', AlbumController::class);
+    Route::resource('/songs', SongController::class);
+    Route::resource('/lyrics', LyricController::class);
+
+});
+// (User)
 Route::group(['middleware' => ['token-verify']], function () {
-    Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
-    Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
+
+    Route::apiResource('/artists', ArtistController::class)->only('index','show');
+    Route::apiResource('/albums', AlbumController::class)->only('index','show');
+    Route::resource('/songs', SongController::class)->only('index','show');
+
+    Route::resource('/lyrics', LyricController::class);
+
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
+    Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
     Route::post('profil', [AuthController::class, 'profil']);
+
 });
 
 
-Route::apiResource('/artists', ArtistController::class);
-Route::apiResource('/roles', RoleController::class);
-Route::apiResource('/albums', AlbumController::class);
-Route::resource('/lyrics', LyricController::class);
-Route::resource('/songs', SongController::class);
+
+// Route::apiResource('/artists', ArtistController::class);
+// Route::apiResource('/roles', RoleController::class);
+// Route::apiResource('/albums', AlbumController::class);
+// Route::resource('/lyrics', LyricController::class);
+// Route::resource('/songs', SongController::class);
 
 
 // Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
