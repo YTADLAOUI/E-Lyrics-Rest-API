@@ -27,10 +27,7 @@ class albumController extends Controller
         $albums = Album::with('song')->orderBy('id')->get();
 
         $this->returnData('albums', $albums, "Success", '');
-        // return response()->json([
-        //     'status' => 'success',
-        //     'albums' => $albums
-        // ]);
+       
     }
 
     /**
