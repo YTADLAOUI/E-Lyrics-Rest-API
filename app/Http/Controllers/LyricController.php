@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Lyric;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Traits\GeneralTrait;
 
 class LyricController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
@@ -61,7 +63,7 @@ class LyricController extends Controller
      */
     public function show($id)
     {
-        $lyr = Lyric::find($id);
+        $lyr = Lyric::findOrFail($id);
         return $lyr->toJson();
     }
 
@@ -73,7 +75,7 @@ class LyricController extends Controller
      */
     public function edit($id)
     {
-        $prd = Lyric::find($id);
+        $prd = Lyric::findOrFail($id);
     }
 
     /**
@@ -86,8 +88,12 @@ class LyricController extends Controller
     public function update(Request $request, $id)
     {
         $lyric = Lyric::find($id);
-        $input = $request->all();
-        $lyric->update($input);
+        if (is_null($lyric)) {
+            return $this->returnError('E016', 'Somthing not correct for this update lyric please try again!');
+        }
+        $lyric->update($request->all());
+        return $this->returnData("lyric", $lyric, "lyric update with success", "");
+    
     }
 
     /**
@@ -98,6 +104,13 @@ class LyricController extends Controller
      */
     public function destroy($id)
     {
-        Lyric::destroy($id);
+        $lyric = Lyric::find($id);
+        if (is_null($lyric)) {
+            return $this->returnError('E013', 'deleted failed!');
+        }
+        $lyric->delete();
+        return $this->returnError('E013', 'Deleted Success');
     }
+       
+    
 }

@@ -61,7 +61,7 @@ class SongController extends Controller
      */
     public function show($id)
     {
-        $song = song::find($id);
+        $song = song::findOrFail($id);
         return $song->toJson();
     }
 
@@ -73,7 +73,7 @@ class SongController extends Controller
      */
     public function edit($id)
     {
-        $song = song::find($id);
+        $song = song::findOrFail($id);
         return $song->toJson();
     }
 
@@ -86,7 +86,7 @@ class SongController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $song = song::find($id);
+        $song = song::findOrFail($id);
         $input = $request->all();
         $song->update($input);
         return $song->toJson();
@@ -100,7 +100,12 @@ class SongController extends Controller
      */
     public function destroy($id)
     {
-        song::destroy($id);
-        return 'delete sucss';
+        $song = song::find($id);
+        if (is_null($song)) {
+            return $this->returnError('E013', 'deleted failed!');
+        }
+        $song->delete();
+        return $this->returnError('E013', 'Deleted Success');
     }
+    
 }
