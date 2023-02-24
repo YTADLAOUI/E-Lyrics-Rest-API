@@ -21,7 +21,6 @@ class ProfileController extends Controller
 
         $email = $request->email;
         $user = User::where('email', $email)->first();
-        dd($user);
         if (!$user) {
             return $this->returnError('E404', 'user not found');
         } else {
