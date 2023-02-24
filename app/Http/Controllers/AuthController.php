@@ -44,7 +44,7 @@ class AuthController extends Controller
 
             // generate Auth
             $user = JWTAuth::user();
-            $user->remember_token = $token;
+            // $user->remember_token = $token;
             //return token jwt
             return $this->returnData('user', $user, 'success', $token);
         } catch (Exception $e) {
