@@ -11,20 +11,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SongController;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 //PUBLIC
 Route::controller(AuthController::class)->group(function () {
@@ -32,20 +18,31 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
 });
 
-//PRIVATE
-Route::group(['middleware' => ['token-verify']], function () {
-    Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
-    Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('profil', [AuthController::class, 'profil']);
+
+//PRIVATE (Admin)
+Route::group(['middleware' => ['token-verify','admin-verify']], function () {
+
     Route::apiResource('/artists', ArtistController::class);
     Route::apiResource('/roles', RoleController::class);
     Route::apiResource('/albums', AlbumController::class);
-    Route::resource('/lyrics', LyricController::class);
     Route::resource('/songs', SongController::class);
+    Route::resource('/lyrics', LyricController::class);
+
+});
+// (User)
+Route::group(['middleware' => ['token-verify']], function () {
+
+    Route::apiResource('/artists', ArtistController::class)->only('index','show');
+    Route::apiResource('/albums', AlbumController::class)->only('index','show');
+    Route::resource('/songs', SongController::class)->only('index','show');
+
+    Route::resource('/lyrics', LyricController::class);
+
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('/profile/{id}/profile_edit', [ProfileController::class, 'profile_edit']);
+    Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
+    Route::post('profil', [AuthController::class, 'profil']);
+
 });
 
 
-// Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-// Route::post('login', [AuthController::class, 'login']);
-// Route::post('/profile/change-password', ProfileController::class, 'change_password');

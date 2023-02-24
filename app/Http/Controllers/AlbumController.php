@@ -26,12 +26,12 @@ class albumController extends Controller
     {
         // $songs = Album::find(2)->song;
         $albums = Album::with('song')->orderBy('id')->get();
-
         // $this->returnData('albums', $albums, "Success", '');
         return response()->json([
             'status' => 'success',
             'albums' => $albums
         ]);
+
     }
 
     /**
