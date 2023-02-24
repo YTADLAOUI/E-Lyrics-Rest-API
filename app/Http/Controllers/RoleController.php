@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Traits\GeneralTrait;
 
 class RoleController extends Controller
 {
+    // trait to generate Error and success message
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
