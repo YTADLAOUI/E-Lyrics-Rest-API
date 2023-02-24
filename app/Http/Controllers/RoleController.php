@@ -19,7 +19,7 @@ class RoleController extends Controller
         if (is_null($role)) {
             return $this->returnError('E030', 'Not found any role!');
         }
-        return response()->json($role, 200);
+        return $this->returnData("Role", $role, "Find Roles", "");
     }
 
     /**
@@ -51,7 +51,7 @@ class RoleController extends Controller
         if (is_null($create)) {
             return $this->returnError('E031', 'Somthing not correct for this create role please try again!');
         }
-        return response()->json($create, 201);
+        return $this->returnData("Role", $create, "Created success", "");
     }
 
     /**
@@ -90,7 +90,7 @@ class RoleController extends Controller
             return $this->returnError('E032', 'Somthing not correct for this update role please try again!');
         }
         $role->update($request->all());
-        return response()->json($role, 200);
+        return $this->returnData("Role", $role, "Role update with success", "");
     }
 
     /**
