@@ -26,19 +26,19 @@ class AuthController extends Controller
         try {
             $rules = [
 
-        'email'=>'required|email',
-        'password'=>'required'
-    ];
-    $validator = Validator::make($request->all(),$rules);
+                'email' => 'required|email',
+                'password' => 'required'
+            ];
+            $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return $this->returnError('E004', 'email or password not Exist');
             }
 
             //login
-            $credentiel = $request->only(['email', 'password']);
+            $email_password = $request->only(['email', 'password']);
 
-            $token = JWTAuth::attempt($credentiel);
+            $token = JWTAuth::attempt($email_password);
             if (!$token)
                 return $this->returnError('E001', 'email and password not correct');
 
@@ -95,12 +95,10 @@ class AuthController extends Controller
         try {
             $user = JWTAuth::parseToken()->authenticate();
 
-                if (!$user) {
-                return  $this->returnError('E404','user_not_found!');
-
-                }
-
-            } catch (TokenExpiredException $e) {
+            if (!$user) {
+                return  $this->returnError('E404', 'user_not_found!');
+            }
+        } catch (TokenExpiredException $e) {
 
             return  $this->returnError('E404', 'token_expired!');
         } catch (TokenInvalidException $e) {
