@@ -10,20 +10,7 @@ use App\Http\Controllers\LyricController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SongController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 //PUBLIC
 Route::controller(AuthController::class)->group(function () {
@@ -57,15 +44,3 @@ Route::group(['middleware' => ['token-verify']], function () {
 
 });
 
-
-
-// Route::apiResource('/artists', ArtistController::class);
-// Route::apiResource('/roles', RoleController::class);
-// Route::apiResource('/albums', AlbumController::class);
-// Route::resource('/lyrics', LyricController::class);
-// Route::resource('/songs', SongController::class);
-
-
-// Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-// Route::post('login', [AuthController::class, 'login']);
-// Route::post('/profile/change-password', ProfileController::class, 'change_password');
