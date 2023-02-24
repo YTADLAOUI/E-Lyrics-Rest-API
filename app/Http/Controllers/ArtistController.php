@@ -98,7 +98,7 @@ class ArtistController extends Controller
             return $this->returnError('E016', 'Somthing not correct for this update artist please try again!');
         }
         $artist->update($request->all());
-        return response()->json($artist, 200);
+       return $this->returnData("Artist",$artist,"Artist update with success","");
     }
 
     /**
