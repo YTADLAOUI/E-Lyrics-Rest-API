@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +24,13 @@ class ProfileController extends Controller
         $user = User::where('email', $email)->first();
         if (!$user) {
             return $this->returnError('E404', 'user not found');
-        } else {
+        }
+        else if($user!=JWTAuth::parseToken()->authenticate()){
+            
+            return $this->returnError('E002', 'User Not Login.');
+
+        }
+         else {
             $user->password = bcrypt($request->newPassword);
             $user->save();
             return $this->returnSuccessMessage('reset password succefuly ');
@@ -41,7 +48,12 @@ class ProfileController extends Controller
 
         if (!$user) {
             return $this->returnError('E001', 'User not found.');
-        } else {
+        }else if($user!=JWTAuth::parseToken()->authenticate()){
+            return $this->returnError('E002', 'User Not Login.');
+
+        }
+
+        else {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:5',
                 'email' => 'required|string|email|max:255|unique:users,email',
@@ -66,8 +78,7 @@ class ProfileController extends Controller
                 'status' => 200,
             ];
 
-            return $this->returnData("User",$data,"user updated successfuly",'');
-
+            return $this->returnData("User", $data, "user updated successfuly", '');
         }
     }
 }

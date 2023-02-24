@@ -17,9 +17,9 @@ class RoleController extends Controller
     {
         $role = Role::get();
         if (is_null($role)) {
-            return response()->json('Not found any role!', 404);
+            return $this->returnError('E030', 'Not found any role!');
         }
-        return response()->json($role, 200);
+        return $this->returnData("Role", $role, "Find Roles", "");
     }
 
     /**
@@ -49,9 +49,9 @@ class RoleController extends Controller
         }
         $create = Role::create($request->all());
         if (is_null($create)) {
-            return response()->json('Somthing not correct for this create role please try again!', 404);
+            return $this->returnError('E031', 'Somthing not correct for this create role please try again!');
         }
-        return response()->json($create, 201);
+        return $this->returnData("Role", $create, "Created success", "");
     }
 
     /**
@@ -87,10 +87,10 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         if (is_null($role)) {
-            return response()->json('Somthing not correct for this update role please try again!', 404);
+            return $this->returnError('E032', 'Somthing not correct for this update role please try again!');
         }
         $role->update($request->all());
-        return response()->json($role, 200);
+        return $this->returnData("Role", $role, "Role update with success", "");
     }
 
     /**
@@ -103,9 +103,9 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
         if (is_null($role)) {
-            return response()->json('deleted failed!', 404);
+            return $this->returnError('E033', 'deleted failed!');
         }
         $role->delete();
-        return response()->json(null, 204);
+        return $this->returnError('E033', 'Deleted Success');
     }
 }

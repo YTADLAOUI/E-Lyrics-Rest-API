@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Artist;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\GeneralTrait;
 
 class ArtistController extends Controller
 {
+    // trait to generate Error and success message
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +21,9 @@ class ArtistController extends Controller
     {
         $artist = Artist::with('song')->get();
         if (is_null($artist)) {
-            return response()->json('Not found any data!', 404);
+            return $this->returnError('E021', 'Not found any data!');
         }
-        return response()->json($artist, 200);
+        return $this->returnData("Artist", $artist, "Find Artist", "");
     }
 
     /**
@@ -50,9 +53,10 @@ class ArtistController extends Controller
         }
         $create = Artist::create($request->all());
         if (is_null($create)) {
-            return response()->json('Somthing not correct for this create artist please try again!', 404);
+            return $this->returnError('E020', 'Somthing not correct for this create artist please try again!');
         }
         return response()->json($create, 201);
+        return $this->returnData("Artist", $create, "Created Success", "");
     }
 
     /**
@@ -65,9 +69,9 @@ class ArtistController extends Controller
     {
         $artist = Artist::find($id);
         if (is_null($artist)) {
-            return response()->json('Artist not found!', 404);
+            return $this->returnError('E019', 'Artist not found!');
         }
-        return response()->json($artist, 200);
+        return $this->returnData("Artist", $artist, "Find Artist", "");
     }
 
     /**
@@ -92,10 +96,10 @@ class ArtistController extends Controller
     {
         $artist = Artist::find($id);
         if (is_null($artist)) {
-            return response()->json('Somthing not correct for this update artist please try again!', 404);
+            return $this->returnError('E016', 'Somthing not correct for this update artist please try again!');
         }
         $artist->update($request->all());
-        return response()->json($artist, 200);
+        return $this->returnData("Artist", $artist, "Artist update with success", "");
     }
 
     /**
@@ -108,9 +112,9 @@ class ArtistController extends Controller
     {
         $artist = Artist::find($id);
         if (is_null($artist)) {
-            return response()->json('deleted failed!', 404);
+            return $this->returnError('E013', 'deleted failed!');
         }
         $artist->delete();
-        return response()->json(null, 204);
+        return $this->returnError('E013', 'Deleted Success');
     }
 }

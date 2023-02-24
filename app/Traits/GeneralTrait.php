@@ -4,8 +4,6 @@ namespace App\Traits;
 
 trait GeneralTrait
 {
-
-
     public function returnError($errNum, $msg)
     {
         return response()->json([
@@ -33,14 +31,5 @@ trait GeneralTrait
         ]);
     }
 
-    public function returnValidationError($code = "E001", $validator)
-    {
-        return $this->returnError($code, $validator->errors()->first());
-    }
-    public function returnCodeAccordingToInput($validator)
-    {
-        $inputs = array_keys($validator->errors()->toArray());
-        $code = $this->getErrorCode($inputs[0]);
-        return $code;
-    }
+
 }
