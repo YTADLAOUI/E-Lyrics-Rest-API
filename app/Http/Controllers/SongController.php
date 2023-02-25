@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\song;
 use Illuminate\Http\Request;
+use App\Traits\GeneralTrait;
 
 class SongController extends Controller
 {
+    // trait to generate Error and success message
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      *
