@@ -21,13 +21,11 @@ Route::controller(AuthController::class)->group(function () {
 
 //PRIVATE (Admin)
 Route::group(['middleware' => ['token-verify','admin-verify']], function () {
-
     Route::apiResource('/artists', ArtistController::class);
     Route::apiResource('/roles', RoleController::class);
     Route::apiResource('/albums', AlbumController::class);
     Route::resource('/songs', SongController::class);
     Route::resource('/lyrics', LyricController::class);
-
 });
 // (User)
 Route::group(['middleware' => ['token-verify']], function () {
