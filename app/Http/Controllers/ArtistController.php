@@ -55,7 +55,6 @@ class ArtistController extends Controller
         if (is_null($create)) {
             return $this->returnError('E020', 'Somthing not correct for this create artist please try again!');
         }
-        return response()->json($create, 201);
         return $this->returnData("Artist", $create, "Created Success", "");
     }
 
